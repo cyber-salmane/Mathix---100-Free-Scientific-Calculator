@@ -1,18 +1,16 @@
 /**
- * Mathix Service Worker
+ * Mathix Service Worker v2
  * - Caches the app shell for offline use
  * - Network-first for AI calls, cache-first for static assets
  */
 
-const CACHE_NAME = 'mathix-v1';
+const CACHE_NAME = 'mathix-v2';
 const CACHE_URLS = [
   '/',
   '/index.html',
   '/manifest.json',
-  // CDN assets cached on first fetch
 ];
 
-// AI/Worker URLs — always network, never cache
 const NETWORK_ONLY = [
   'mathixai.salmane0313.workers.dev',
   'generativelanguage.googleapis.com',
@@ -20,7 +18,6 @@ const NETWORK_ONLY = [
   'openrouter.ai',
 ];
 
-// ── Install: cache app shell ──
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME)
@@ -29,7 +26,6 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// ── Activate: clean old caches ──
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -38,17 +34,14 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// ── Fetch: smart caching strategy ──
 self.addEventListener('fetch', (e) => {
   const url = e.request.url;
 
-  // Always network for AI API calls
   if (NETWORK_ONLY.some(domain => url.includes(domain))) {
     e.respondWith(fetch(e.request));
     return;
   }
 
-  // Network-first for HTML (get latest version)
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
@@ -62,7 +55,6 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Cache-first for fonts, CDN scripts, images
   if (
     url.includes('fonts.googleapis.com') ||
     url.includes('fonts.gstatic.com') ||
@@ -88,7 +80,6 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // Default: network with cache fallback
   e.respondWith(
     fetch(e.request).catch(() => caches.match(e.request))
   );

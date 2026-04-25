@@ -19,12 +19,12 @@
 <meta name="keywords" content="scientific calculator, step by step calculator, math solver, algebra solver, free calculator, graphing calculator, AI math, photo math, calculus solver, equation solver">
 <meta name="author" content="Mathix">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://mathixai.netlify.app">
+<link rel="canonical" href="https://mathix.pages.dev">
 
 <!-- Open Graph (WhatsApp, Facebook, LinkedIn previews) -->
 <meta property="og:title" content="Mathix — Free Scientific Calculator with AI Steps">
 <meta property="og:description" content="Solve any math problem step by step, for free. Algebra, calculus, graphing, photo scanner and more. No paywall, no account.">
-<meta property="og:url" content="https://mathixai.netlify.app">
+<meta property="og:url" content="https://mathix.pages.dev">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Mathix">
 
@@ -1018,6 +1018,46 @@ header{
 
 .flib-empty{text-align:center;padding:80px 20px;color:var(--text3)}
 
+/* ═══ MATRIX CALCULATOR ═══ */
+.mat-layout{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.mat-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);padding:12px}
+.mat-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mat-label{font-size:13px;font-weight:700;color:var(--accent2);letter-spacing:.05em}
+.mat-size-controls{display:flex;align-items:center;gap:5px}
+.mat-size-sel{background:var(--s3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--sans);font-size:12px;padding:3px 6px;cursor:pointer}
+.mat-grid{display:grid;gap:5px}
+.mat-cell{
+  width:100%;padding:6px 4px;text-align:center;
+  background:var(--s1);border:1px solid var(--border);border-radius:6px;
+  color:var(--text);font-family:var(--mono);font-size:13px;outline:none;
+  transition:border-color .15s;
+}
+.mat-cell:focus{border-color:var(--accent)}
+.mat-ops{background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);padding:12px;margin-bottom:12px}
+.mat-ops-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.mat-ops-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mat-op-btn{
+  padding:7px 12px;border-radius:8px;border:1px solid var(--border2);
+  background:var(--s1);color:var(--text2);font-family:var(--mono);font-size:12px;
+  font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.mat-op-btn:hover{background:rgba(124,93,249,.15);border-color:var(--accent);color:var(--accent2)}
+.mat-scalar-inp{
+  width:52px;padding:6px 8px;border-radius:8px;border:1px solid var(--border2);
+  background:var(--s1);color:var(--text);font-family:var(--mono);font-size:12px;
+  text-align:center;outline:none;
+}
+.mat-scalar-inp:focus{border-color:var(--accent)}
+.mat-result{background:var(--s2);border:1px solid rgba(124,93,249,.3);border-radius:var(--r2);padding:14px}
+.mat-result-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mat-copy-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;font-family:var(--sans)}
+.mat-copy-btn:hover{color:var(--text);border-color:var(--border2)}
+.mat-result-body{font-family:var(--mono);font-size:14px;color:var(--accent2)}
+.mat-result-grid{display:inline-grid;gap:8px;background:rgba(124,93,249,.06);border:1px solid rgba(124,93,249,.15);border-radius:10px;padding:12px 16px}
+.mat-result-cell{text-align:right;min-width:52px;color:var(--text);font-size:13px}
+.mat-scalar-result{font-size:24px;font-weight:700;color:var(--accent2);padding:8px 0}
+.mat-error{color:#f87171;font-size:13px;padding:8px 0}
+
 /* ═══ PWA INSTALL BANNER ═══ */
 .pwa-banner{
   position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);
@@ -1195,6 +1235,81 @@ header{
             <button class="act-btn act-steps" onclick="getSteps()">✦ Show steps</button>
             <button class="act-btn act-copy" onclick="copyRes()">Copy result</button>
             <button class="act-btn act-share" onclick="shareResult()">Share link</button>
+          </div>
+        </div>
+
+        <!-- ── MATRIX CALCULATOR ── -->
+        <div id="matrix-ui" style="display:none">
+          <div class="mat-layout">
+
+            <!-- Matrix A -->
+            <div class="mat-card">
+              <div class="mat-card-head">
+                <span class="mat-label">Matrix A</span>
+                <div class="mat-size-controls">
+                  <select class="mat-size-sel" id="ma-rows" onchange="resizeMatrix('A')">
+                    <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                  </select>
+                  <span style="color:var(--text3);font-size:12px">×</span>
+                  <select class="mat-size-sel" id="ma-cols" onchange="resizeMatrix('A')">
+                    <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mat-grid" id="mat-A"></div>
+            </div>
+
+            <!-- Matrix B -->
+            <div class="mat-card">
+              <div class="mat-card-head">
+                <span class="mat-label">Matrix B</span>
+                <div class="mat-size-controls">
+                  <select class="mat-size-sel" id="mb-rows" onchange="resizeMatrix('B')">
+                    <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                  </select>
+                  <span style="color:var(--text3);font-size:12px">×</span>
+                  <select class="mat-size-sel" id="mb-cols" onchange="resizeMatrix('B')">
+                    <option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mat-grid" id="mat-B"></div>
+            </div>
+          </div>
+
+          <!-- Operations -->
+          <div class="mat-ops">
+            <div class="mat-ops-label">A and B</div>
+            <div class="mat-ops-row">
+              <button class="mat-op-btn" onclick="matOp('add')">A + B</button>
+              <button class="mat-op-btn" onclick="matOp('sub')">A − B</button>
+              <button class="mat-op-btn" onclick="matOp('mul')">A × B</button>
+            </div>
+            <div class="mat-ops-label" style="margin-top:10px">Matrix A only</div>
+            <div class="mat-ops-row">
+              <button class="mat-op-btn" onclick="matOp('det')">det(A)</button>
+              <button class="mat-op-btn" onclick="matOp('inv')">A⁻¹</button>
+              <button class="mat-op-btn" onclick="matOp('trans')">Aᵀ</button>
+              <button class="mat-op-btn" onclick="matOp('rank')">rank(A)</button>
+              <button class="mat-op-btn" onclick="matOp('trace')">trace(A)</button>
+              <button class="mat-op-btn" onclick="matOp('norm')">‖A‖</button>
+            </div>
+            <div class="mat-ops-label" style="margin-top:10px">Scalar</div>
+            <div class="mat-ops-row">
+              <button class="mat-op-btn" onclick="matOp('scalar')">k × A</button>
+              <input class="mat-scalar-inp" id="mat-scalar" type="number" value="2" placeholder="k">
+              <button class="mat-op-btn" onclick="matOp('pow')">A^n</button>
+              <input class="mat-scalar-inp" id="mat-pow" type="number" value="2" placeholder="n">
+            </div>
+          </div>
+
+          <!-- Result -->
+          <div class="mat-result" id="mat-result" style="display:none">
+            <div class="mat-result-head">
+              <span class="mat-ops-label" id="mat-result-label">Result</span>
+              <button class="mat-copy-btn" onclick="copyMatResult()">Copy</button>
+            </div>
+            <div class="mat-result-body" id="mat-result-body"></div>
           </div>
         </div>
       </div>
@@ -1471,27 +1586,27 @@ header{
     <div class="conv-wrap">
       <div class="hero-eye" style="display:block;text-align:center;margin-bottom:12px">unit converter</div>
       <div class="conv-grid">
+
         <!-- Length -->
         <div class="conv-card">
           <div class="conv-title"><span class="ic">📏</span> Length</div>
-          <div class="conv-field">
-            <div class="conv-lbl">VALUE</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
             <input class="conv-inp" id="len-val" type="number" value="1" oninput="convertLen()">
           </div>
-          <div class="conv-field">
-            <div class="conv-lbl">FROM</div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
             <select class="conv-sel" id="len-from" onchange="convertLen()">
               <option>meter</option><option>kilometer</option><option>centimeter</option>
-              <option>millimeter</option><option>mile</option><option>yard</option>
-              <option>foot</option><option>inch</option>
+              <option>millimeter</option><option>micrometer</option><option>nanometer</option>
+              <option>mile</option><option>yard</option><option>foot</option>
+              <option>inch</option><option>nautical mile</option><option>light year</option>
             </select>
           </div>
-          <div class="conv-field">
-            <div class="conv-lbl">TO</div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
             <select class="conv-sel" id="len-to" onchange="convertLen()">
               <option>kilometer</option><option>meter</option><option>centimeter</option>
-              <option>millimeter</option><option>mile</option><option>yard</option>
-              <option>foot</option><option>inch</option>
+              <option>millimeter</option><option>micrometer</option><option>nanometer</option>
+              <option>mile</option><option>yard</option><option>foot</option>
+              <option>inch</option><option>nautical mile</option><option>light year</option>
             </select>
           </div>
           <div class="conv-result" id="len-res">1 km</div>
@@ -1500,20 +1615,17 @@ header{
         <!-- Temperature -->
         <div class="conv-card">
           <div class="conv-title"><span class="ic">🌡️</span> Temperature</div>
-          <div class="conv-field">
-            <div class="conv-lbl">VALUE</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
             <input class="conv-inp" id="tmp-val" type="number" value="100" oninput="convertTmp()">
           </div>
-          <div class="conv-field">
-            <div class="conv-lbl">FROM</div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
             <select class="conv-sel" id="tmp-from" onchange="convertTmp()">
-              <option>Celsius</option><option>Fahrenheit</option><option>Kelvin</option>
+              <option>Celsius</option><option>Fahrenheit</option><option>Kelvin</option><option>Rankine</option>
             </select>
           </div>
-          <div class="conv-field">
-            <div class="conv-lbl">TO</div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
             <select class="conv-sel" id="tmp-to" onchange="convertTmp()">
-              <option>Fahrenheit</option><option>Celsius</option><option>Kelvin</option>
+              <option>Fahrenheit</option><option>Celsius</option><option>Kelvin</option><option>Rankine</option>
             </select>
           </div>
           <div class="conv-result" id="tmp-res">212 °F</div>
@@ -1522,32 +1634,164 @@ header{
         <!-- Mass -->
         <div class="conv-card">
           <div class="conv-title"><span class="ic">⚖️</span> Mass</div>
-          <div class="conv-field">
-            <div class="conv-lbl">VALUE</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
             <input class="conv-inp" id="mass-val" type="number" value="1" oninput="convertMass()">
           </div>
-          <div class="conv-field">
-            <div class="conv-lbl">FROM</div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
             <select class="conv-sel" id="mass-from" onchange="convertMass()">
-              <option>kilogram</option><option>gram</option><option>pound</option>
-              <option>ounce</option><option>ton</option><option>milligram</option>
+              <option>kilogram</option><option>gram</option><option>milligram</option>
+              <option>metric ton</option><option>pound</option><option>ounce</option>
+              <option>stone</option><option>short ton</option><option>long ton</option>
             </select>
           </div>
-          <div class="conv-field">
-            <div class="conv-lbl">TO</div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
             <select class="conv-sel" id="mass-to" onchange="convertMass()">
               <option>pound</option><option>gram</option><option>kilogram</option>
-              <option>ounce</option><option>ton</option><option>milligram</option>
+              <option>milligram</option><option>metric ton</option><option>ounce</option>
+              <option>stone</option><option>short ton</option><option>long ton</option>
             </select>
           </div>
           <div class="conv-result" id="mass-res">2.2046 lbs</div>
         </div>
 
+        <!-- Speed -->
+        <div class="conv-card">
+          <div class="conv-title"><span class="ic">🚀</span> Speed</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
+            <input class="conv-inp" id="spd-val" type="number" value="100" oninput="convertSpd()">
+          </div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
+            <select class="conv-sel" id="spd-from" onchange="convertSpd()">
+              <option>km/h</option><option>m/s</option><option>mph</option>
+              <option>knot</option><option>ft/s</option><option>mach</option>
+            </select>
+          </div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
+            <select class="conv-sel" id="spd-to" onchange="convertSpd()">
+              <option>mph</option><option>m/s</option><option>km/h</option>
+              <option>knot</option><option>ft/s</option><option>mach</option>
+            </select>
+          </div>
+          <div class="conv-result" id="spd-res"></div>
+        </div>
+
+        <!-- Area -->
+        <div class="conv-card">
+          <div class="conv-title"><span class="ic">⬛</span> Area</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
+            <input class="conv-inp" id="area-val" type="number" value="1" oninput="convertArea()">
+          </div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
+            <select class="conv-sel" id="area-from" onchange="convertArea()">
+              <option>m²</option><option>km²</option><option>cm²</option><option>mm²</option>
+              <option>hectare</option><option>acre</option><option>ft²</option><option>in²</option><option>mile²</option>
+            </select>
+          </div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
+            <select class="conv-sel" id="area-to" onchange="convertArea()">
+              <option>hectare</option><option>m²</option><option>km²</option><option>cm²</option>
+              <option>mm²</option><option>acre</option><option>ft²</option><option>in²</option><option>mile²</option>
+            </select>
+          </div>
+          <div class="conv-result" id="area-res"></div>
+        </div>
+
+        <!-- Volume -->
+        <div class="conv-card">
+          <div class="conv-title"><span class="ic">🧊</span> Volume</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
+            <input class="conv-inp" id="vol-val" type="number" value="1" oninput="convertVol()">
+          </div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
+            <select class="conv-sel" id="vol-from" onchange="convertVol()">
+              <option>liter</option><option>milliliter</option><option>m³</option><option>cm³</option>
+              <option>gallon (US)</option><option>quart</option><option>pint</option>
+              <option>cup</option><option>fl oz</option><option>tablespoon</option><option>teaspoon</option>
+            </select>
+          </div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
+            <select class="conv-sel" id="vol-to" onchange="convertVol()">
+              <option>gallon (US)</option><option>liter</option><option>milliliter</option>
+              <option>m³</option><option>cm³</option><option>quart</option><option>pint</option>
+              <option>cup</option><option>fl oz</option><option>tablespoon</option><option>teaspoon</option>
+            </select>
+          </div>
+          <div class="conv-result" id="vol-res"></div>
+        </div>
+
+        <!-- Time -->
+        <div class="conv-card">
+          <div class="conv-title"><span class="ic">⏱️</span> Time</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
+            <input class="conv-inp" id="time-val" type="number" value="1" oninput="convertTime()">
+          </div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
+            <select class="conv-sel" id="time-from" onchange="convertTime()">
+              <option>second</option><option>millisecond</option><option>microsecond</option>
+              <option>minute</option><option>hour</option><option>day</option>
+              <option>week</option><option>month</option><option>year</option>
+            </select>
+          </div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
+            <select class="conv-sel" id="time-to" onchange="convertTime()">
+              <option>minute</option><option>second</option><option>millisecond</option>
+              <option>microsecond</option><option>hour</option><option>day</option>
+              <option>week</option><option>month</option><option>year</option>
+            </select>
+          </div>
+          <div class="conv-result" id="time-res"></div>
+        </div>
+
+        <!-- Energy -->
+        <div class="conv-card">
+          <div class="conv-title"><span class="ic">⚡</span> Energy</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
+            <input class="conv-inp" id="nrg-val" type="number" value="1" oninput="convertNrg()">
+          </div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
+            <select class="conv-sel" id="nrg-from" onchange="convertNrg()">
+              <option>joule</option><option>kilojoule</option><option>calorie</option>
+              <option>kilocalorie</option><option>watt-hour</option><option>kilowatt-hour</option>
+              <option>eV</option><option>BTU</option><option>erg</option>
+            </select>
+          </div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
+            <select class="conv-sel" id="nrg-to" onchange="convertNrg()">
+              <option>kilocalorie</option><option>joule</option><option>kilojoule</option>
+              <option>calorie</option><option>watt-hour</option><option>kilowatt-hour</option>
+              <option>eV</option><option>BTU</option><option>erg</option>
+            </select>
+          </div>
+          <div class="conv-result" id="nrg-res"></div>
+        </div>
+
+        <!-- Pressure -->
+        <div class="conv-card">
+          <div class="conv-title"><span class="ic">🔵</span> Pressure</div>
+          <div class="conv-field"><div class="conv-lbl">VALUE</div>
+            <input class="conv-inp" id="pres-val" type="number" value="1" oninput="convertPres()">
+          </div>
+          <div class="conv-field"><div class="conv-lbl">FROM</div>
+            <select class="conv-sel" id="pres-from" onchange="convertPres()">
+              <option>pascal</option><option>kilopascal</option><option>megapascal</option>
+              <option>bar</option><option>psi</option><option>atm</option>
+              <option>mmHg</option><option>torr</option>
+            </select>
+          </div>
+          <div class="conv-field"><div class="conv-lbl">TO</div>
+            <select class="conv-sel" id="pres-to" onchange="convertPres()">
+              <option>atm</option><option>pascal</option><option>kilopascal</option>
+              <option>megapascal</option><option>bar</option><option>psi</option>
+              <option>mmHg</option><option>torr</option>
+            </select>
+          </div>
+          <div class="conv-result" id="pres-res"></div>
+        </div>
+
         <!-- Number base -->
         <div class="conv-card">
           <div class="conv-title"><span class="ic">🔢</span> Number Base</div>
-          <div class="conv-field">
-            <div class="conv-lbl">DECIMAL VALUE</div>
+          <div class="conv-field"><div class="conv-lbl">DECIMAL VALUE</div>
             <input class="conv-inp" id="base-val" type="number" value="255" oninput="convertBase()">
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
@@ -1557,6 +1801,7 @@ header{
             <div><div class="conv-lbl">DECIMAL</div><div class="conv-result" id="base-dec">255</div></div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -1926,7 +2171,7 @@ function showPage(id, btn) {
   document.getElementById('page-' + id).classList.add('active');
   btn.classList.add('on');
   if (id === 'graph') initGraph();
-  if (id === 'conv') { convertLen(); convertTmp(); convertMass(); convertBase(); }
+  if (id === 'conv') { convertLen(); convertTmp(); convertMass(); convertBase(); convertSpd(); convertArea(); convertVol(); convertTime(); convertNrg(); convertPres(); }
   if (id === 'practice') initPractice();
   if (id === 'scan') initScan();
   if (id === 'formulas') initFormulas();
@@ -2384,7 +2629,7 @@ function exportHistPDF() {
     <div class="summary-box"><div class="summary-val">${new Date().toLocaleDateString('en-US',{month:'short'})}</div><div class="summary-lbl">Month</div></div>
     <div class="summary-box"><div class="summary-val">${date.split(',')[1]?.trim() || date}</div><div class="summary-lbl">Date</div></div>
   </div>
-  <div class="footer">Generated by Mathix · mathixai.netlify.app · Free AI-powered scientific calculator</div>
+  <div class="footer">Generated by Mathix · mathix.pages.dev · Free AI-powered scientific calculator</div>
 </body>
 </html>`);
   win.document.close();
@@ -2418,12 +2663,299 @@ function selTab(el, t) {
   el.classList.add('on');
   const hints = {
     std:'Type any expression. Use x for algebra.',
-    sci:'Scientific functions: sin(x), log(x), sqrt(x), factorial(n)',
-    calc:"Calculus: type 'derivative of x^3' or use the Calculus mode buttons",
+    sci:'Scientific: sin(x), log(x), sqrt(x), e^x, factorial(n)',
+    calc:"Calculus: derivative of x^3, integrate x^2, limit of sin(x)/x as x→0",
     stat:'Statistics: mean([1,2,3]), std([4,5,6]), combinations(10,3)',
-    mat:'Matrix: [[1,2],[3,4]] — enter in bracket notation'
+    mat:'Matrix calculator — enter values in the grids below'
   };
   exprEl.placeholder = hints[t] || exprEl.placeholder;
+
+  // Show/hide matrix UI
+  const matUI = document.getElementById('matrix-ui');
+  const kbd = document.getElementById('kb');
+  const fnModes = document.getElementById('fn-modes');
+  const fnRow = document.getElementById('fn-row');
+  const actionRow = document.querySelector('.action-row');
+
+  if (t === 'mat') {
+    if (matUI) matUI.style.display = 'block';
+    if (kbd) kbd.style.display = 'none';
+    if (fnModes) fnModes.style.display = 'none';
+    if (fnRow) fnRow.style.display = 'none';
+    if (actionRow) actionRow.style.display = 'none';
+    initMatrixUI();
+    return;
+  }
+
+  // Show regular keyboard
+  if (matUI) matUI.style.display = 'none';
+  if (kbd) kbd.style.display = 'grid';
+  if (fnModes) fnModes.style.display = 'flex';
+  if (fnRow) fnRow.style.display = 'grid';
+  if (actionRow) actionRow.style.display = 'flex';
+
+  // Each tab shows relevant function modes and auto-selects the first
+  const tabModes = {
+    std:  ['trig','alg','num','cst','geo'],
+    sci:  ['trig','log','num','cst','geo'],
+    calc: ['calc','alg','trig','log','cst'],
+    stat: ['stat','num','alg','cst'],
+  };
+  const modes = tabModes[t] || Object.keys(fmData);
+  const allFmBtns = document.querySelectorAll('.fm');
+
+  allFmBtns.forEach(btn => {
+    const btnMode = btn.getAttribute('onclick').match(/'(\w+)'/)?.[1];
+    btn.style.display = modes.includes(btnMode) ? '' : 'none';
+  });
+
+  // Auto-activate first visible mode for this tab
+  const firstMode = modes[0];
+  const firstBtn = Array.from(allFmBtns).find(b => b.getAttribute('onclick').includes(`'${firstMode}'`));
+  if (firstBtn) setFm(firstMode, firstBtn);
+}
+
+/* ═══════════════════════════════════════════════
+   MATRIX CALCULATOR
+═══════════════════════════════════════════════ */
+let matrixUIReady = false;
+
+function initMatrixUI() {
+  if (matrixUIReady) return;
+  matrixUIReady = true;
+  buildMatGrid('A');
+  buildMatGrid('B');
+}
+
+function getMatSize(id) {
+  const r = parseInt(document.getElementById(`m${id.toLowerCase()}-rows`).value);
+  const c = parseInt(document.getElementById(`m${id.toLowerCase()}-cols`).value);
+  return { r, c };
+}
+
+function buildMatGrid(id) {
+  const { r, c } = getMatSize(id);
+  const grid = document.getElementById(`mat-${id}`);
+  grid.style.gridTemplateColumns = `repeat(${c}, 1fr)`;
+  grid.innerHTML = '';
+  for (let i = 0; i < r; i++) {
+    for (let j = 0; j < c; j++) {
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'mat-cell';
+      inp.value = (i === j) ? '1' : '0'; // Identity-like default
+      inp.dataset.r = i; inp.dataset.c = j;
+      inp.id = `mc-${id}-${i}-${j}`;
+      grid.appendChild(inp);
+    }
+  }
+}
+
+function resizeMatrix(id) {
+  buildMatGrid(id);
+  document.getElementById('mat-result').style.display = 'none';
+}
+
+function readMatrix(id) {
+  const { r, c } = getMatSize(id);
+  const m = [];
+  for (let i = 0; i < r; i++) {
+    const row = [];
+    for (let j = 0; j < c; j++) {
+      const v = parseFloat(document.getElementById(`mc-${id}-${i}-${j}`).value) || 0;
+      row.push(v);
+    }
+    m.push(row);
+  }
+  return m;
+}
+
+// ── Matrix math (pure JS, no library needed) ──
+function matAdd(A, B) {
+  if (A.length!==B.length || A[0].length!==B[0].length) throw new Error('Matrices must be same size for addition');
+  return A.map((row,i) => row.map((v,j) => v + B[i][j]));
+}
+function matSub(A, B) {
+  if (A.length!==B.length || A[0].length!==B[0].length) throw new Error('Matrices must be same size for subtraction');
+  return A.map((row,i) => row.map((v,j) => v - B[i][j]));
+}
+function matMul(A, B) {
+  if (A[0].length !== B.length) throw new Error(`Cannot multiply ${A.length}×${A[0].length} by ${B.length}×${B[0].length} — inner dimensions must match`);
+  return A.map(row => B[0].map((_,j) => row.reduce((s,_,k) => s + row[k]*B[k][j], 0)));
+}
+function matScalar(A, k) { return A.map(row => row.map(v => v * k)); }
+function matTranspose(A) { return A[0].map((_,j) => A.map(row => row[j])); }
+function matTrace(A) {
+  if (A.length !== A[0].length) throw new Error('Trace requires a square matrix');
+  return A.reduce((s,row,i) => s + row[i], 0);
+}
+function matNorm(A) { return Math.sqrt(A.flat().reduce((s,v) => s + v*v, 0)); }
+
+function matDet(A) {
+  const n = A.length;
+  if (A[0].length !== n) throw new Error('Determinant requires a square matrix');
+  if (n === 1) return A[0][0];
+  if (n === 2) return A[0][0]*A[1][1] - A[0][1]*A[1][0];
+  if (n === 3) {
+    return A[0][0]*(A[1][1]*A[2][2]-A[1][2]*A[2][1])
+          -A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])
+          +A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);
+  }
+  // LU decomposition for n>3
+  let det = 1;
+  const M = A.map(r=>[...r]);
+  for (let col = 0; col < n; col++) {
+    let maxRow = col;
+    for (let row = col+1; row < n; row++) if (Math.abs(M[row][col]) > Math.abs(M[maxRow][col])) maxRow = row;
+    [M[col], M[maxRow]] = [M[maxRow], M[col]];
+    if (col !== maxRow) det *= -1;
+    if (Math.abs(M[col][col]) < 1e-12) return 0;
+    det *= M[col][col];
+    for (let row = col+1; row < n; row++) {
+      const f = M[row][col] / M[col][col];
+      for (let k = col; k < n; k++) M[row][k] -= f * M[col][k];
+    }
+  }
+  return det;
+}
+
+function matInverse(A) {
+  const n = A.length;
+  if (A[0].length !== n) throw new Error('Inverse requires a square matrix');
+  const det = matDet(A);
+  if (Math.abs(det) < 1e-10) throw new Error('Matrix is singular (det = 0) — no inverse exists');
+  // Gauss-Jordan elimination
+  const M = A.map((row,i) => [...row, ...Array(n).fill(0).map((_,j)=>i===j?1:0)]);
+  for (let col = 0; col < n; col++) {
+    let maxRow = col;
+    for (let row = col+1; row < n; row++) if (Math.abs(M[row][col]) > Math.abs(M[maxRow][col])) maxRow = row;
+    [M[col], M[maxRow]] = [M[maxRow], M[col]];
+    const pivot = M[col][col];
+    for (let k = 0; k < 2*n; k++) M[col][k] /= pivot;
+    for (let row = 0; row < n; row++) {
+      if (row === col) continue;
+      const f = M[row][col];
+      for (let k = 0; k < 2*n; k++) M[row][k] -= f * M[col][k];
+    }
+  }
+  return M.map(row => row.slice(n));
+}
+
+function matRank(A) {
+  const M = A.map(r=>[...r]);
+  const rows = M.length, cols = M[0].length;
+  let rank = 0;
+  for (let col = 0; col < cols && rank < rows; col++) {
+    let pivotRow = -1;
+    for (let row = rank; row < rows; row++) if (Math.abs(M[row][col]) > 1e-10) { pivotRow = row; break; }
+    if (pivotRow === -1) continue;
+    [M[rank], M[pivotRow]] = [M[pivotRow], M[rank]];
+    const pivot = M[rank][col];
+    for (let k = col; k < cols; k++) M[rank][k] /= pivot;
+    for (let row = 0; row < rows; row++) {
+      if (row === rank) continue;
+      const f = M[row][col];
+      for (let k = col; k < cols; k++) M[row][k] -= f * M[rank][k];
+    }
+    rank++;
+  }
+  return rank;
+}
+
+function matPow(A, n) {
+  if (A.length !== A[0].length) throw new Error('Matrix power requires a square matrix');
+  if (n === 0) return A.map((row,i) => row.map((_,j) => i===j?1:0)); // identity
+  if (n === 1) return A;
+  if (n < 0) { A = matInverse(A); n = -n; }
+  let result = matPow(A, Math.floor(n/2));
+  result = matMul(result, result);
+  if (n % 2 === 1) result = matMul(result, A);
+  return result;
+}
+
+function fmt(v) {
+  if (typeof v !== 'number') return String(v);
+  if (Number.isInteger(v)) return String(v);
+  const r = Math.round(v * 10000) / 10000;
+  return String(r);
+}
+
+function showMatrixResult(label, value) {
+  const res = document.getElementById('mat-result');
+  const body = document.getElementById('mat-result-body');
+  document.getElementById('mat-result-label').textContent = label;
+  res.style.display = 'block';
+
+  if (typeof value === 'number') {
+    body.innerHTML = `<div class="mat-scalar-result">${fmt(value)}</div>`;
+    window._matLastResult = String(fmt(value));
+  } else if (Array.isArray(value) && Array.isArray(value[0])) {
+    // Matrix result
+    const rows = value.length, cols = value[0].length;
+    const grid = document.createElement('div');
+    grid.className = 'mat-result-grid';
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    value.forEach(row => row.forEach(v => {
+      const cell = document.createElement('div');
+      cell.className = 'mat-result-cell';
+      cell.textContent = fmt(v);
+      grid.appendChild(cell);
+    }));
+    body.innerHTML = '';
+    body.appendChild(grid);
+    window._matLastResult = value.map(r=>r.map(fmt).join('\t')).join('\n');
+  } else {
+    body.innerHTML = `<div class="mat-scalar-result">${value}</div>`;
+    window._matLastResult = String(value);
+  }
+
+  res.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function showMatError(msg) {
+  const res = document.getElementById('mat-result');
+  const body = document.getElementById('mat-result-body');
+  document.getElementById('mat-result-label').textContent = 'Error';
+  body.innerHTML = `<div class="mat-error">⚠ ${msg}</div>`;
+  res.style.display = 'block';
+}
+
+function matOp(op) {
+  try {
+    const A = readMatrix('A');
+    const B = readMatrix('B');
+    switch(op) {
+      case 'add':   showMatrixResult('A + B', matAdd(A, B)); break;
+      case 'sub':   showMatrixResult('A − B', matSub(A, B)); break;
+      case 'mul':   showMatrixResult('A × B', matMul(A, B)); break;
+      case 'det':   showMatrixResult('det(A)', matDet(A)); break;
+      case 'inv':   showMatrixResult('A⁻¹', matInverse(A)); break;
+      case 'trans': showMatrixResult('Aᵀ', matTranspose(A)); break;
+      case 'rank':  showMatrixResult('rank(A)', matRank(A)); break;
+      case 'trace': showMatrixResult('trace(A)', matTrace(A)); break;
+      case 'norm':  showMatrixResult('‖A‖ (Frobenius)', matNorm(A)); break;
+      case 'scalar': {
+        const k = parseFloat(document.getElementById('mat-scalar').value);
+        if (isNaN(k)) { showMatError('Enter a scalar value k'); return; }
+        showMatrixResult(`${k} × A`, matScalar(A, k));
+        break;
+      }
+      case 'pow': {
+        const n = parseInt(document.getElementById('mat-pow').value);
+        if (isNaN(n)) { showMatError('Enter an integer power n'); return; }
+        showMatrixResult(`A^${n}`, matPow(A, n));
+        break;
+      }
+    }
+  } catch(e) {
+    showMatError(e.message);
+  }
+}
+
+function copyMatResult() {
+  if (!window._matLastResult) return;
+  navigator.clipboard.writeText(window._matLastResult)
+    .then(() => toast('✓ Result copied!'));
 }
 
 /* ═══════════════════════════════════════════════
@@ -3142,7 +3674,9 @@ function plotGraph() {
 ═══════════════════════════════════════════════ */
 const lenFactors = {
   meter:1, kilometer:1000, centimeter:.01, millimeter:.001,
-  mile:1609.344, yard:.9144, foot:.3048, inch:.0254
+  micrometer:1e-6, nanometer:1e-9,
+  mile:1609.344, yard:.9144, foot:.3048, inch:.0254,
+  'nautical mile':1852, 'light year':9.461e15
 };
 function convertLen() {
   const v=parseFloat(document.getElementById('len-val').value)||0;
@@ -3156,25 +3690,114 @@ function convertTmp() {
   const v=parseFloat(document.getElementById('tmp-val').value)||0;
   const from=document.getElementById('tmp-from').value;
   const to=document.getElementById('tmp-to').value;
-  let celsius;
-  if(from==='Celsius') celsius=v;
-  else if(from==='Fahrenheit') celsius=(v-32)*5/9;
-  else celsius=v-273.15;
+  // Convert to Celsius first
+  let c;
+  if(from==='Celsius') c=v;
+  else if(from==='Fahrenheit') c=(v-32)*5/9;
+  else if(from==='Kelvin') c=v-273.15;
+  else c=(v-491.67)*5/9; // Rankine
   let res;
-  if(to==='Celsius') res=celsius;
-  else if(to==='Fahrenheit') res=celsius*9/5+32;
-  else res=celsius+273.15;
-  const unit = to==='Celsius'?'°C':to==='Fahrenheit'?'°F':'K';
+  if(to==='Celsius') res=c;
+  else if(to==='Fahrenheit') res=c*9/5+32;
+  else if(to==='Kelvin') res=c+273.15;
+  else res=(c+273.15)*9/5; // Rankine
+  const unit={Celsius:'°C',Fahrenheit:'°F',Kelvin:'K',Rankine:'°R'}[to];
   document.getElementById('tmp-res').textContent = `${parseFloat(res.toFixed(4))} ${unit}`;
 }
 
-const massFactors = {kilogram:1,gram:.001,pound:.453592,ounce:.0283495,ton:1000,milligram:1e-6};
+const massFactors = {
+  kilogram:1, gram:.001, milligram:1e-6,
+  'metric ton':1000, pound:.453592, ounce:.0283495,
+  stone:6.35029, 'short ton':907.185, 'long ton':1016.05
+};
 function convertMass() {
   const v=parseFloat(document.getElementById('mass-val').value)||0;
   const from=document.getElementById('mass-from').value;
   const to=document.getElementById('mass-to').value;
   const res = v * massFactors[from] / massFactors[to];
   document.getElementById('mass-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
+}
+
+// Speed (all in m/s)
+const spdFactors = {
+  'km/h':1/3.6, 'm/s':1, 'mph':0.44704,
+  'knot':0.514444, 'ft/s':0.3048, 'mach':343
+};
+function convertSpd() {
+  const v=parseFloat(document.getElementById('spd-val').value)||0;
+  const from=document.getElementById('spd-from').value;
+  const to=document.getElementById('spd-to').value;
+  const res = v * spdFactors[from] / spdFactors[to];
+  document.getElementById('spd-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
+}
+
+// Area (all in m²)
+const areaFactors = {
+  'm²':1,'km²':1e6,'cm²':1e-4,'mm²':1e-6,
+  'hectare':1e4,'acre':4046.86,'ft²':0.092903,'in²':6.4516e-4,'mile²':2.58999e6
+};
+function convertArea() {
+  const v=parseFloat(document.getElementById('area-val').value)||0;
+  const from=document.getElementById('area-from').value;
+  const to=document.getElementById('area-to').value;
+  const res = v * areaFactors[from] / areaFactors[to];
+  document.getElementById('area-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
+}
+
+// Volume (all in liters)
+const volFactors = {
+  'liter':1,'milliliter':0.001,'m³':1000,'cm³':0.001,
+  'gallon (US)':3.78541,'quart':0.946353,'pint':0.473176,
+  'cup':0.236588,'fl oz':0.0295735,'tablespoon':0.0147868,'teaspoon':0.00492892
+};
+function convertVol() {
+  const v=parseFloat(document.getElementById('vol-val').value)||0;
+  const from=document.getElementById('vol-from').value;
+  const to=document.getElementById('vol-to').value;
+  const res = v * volFactors[from] / volFactors[to];
+  document.getElementById('vol-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
+}
+
+// Time (all in seconds)
+const timeFactors = {
+  'second':1,'millisecond':0.001,'microsecond':1e-6,
+  'minute':60,'hour':3600,'day':86400,
+  'week':604800,'month':2629800,'year':31557600
+};
+function convertTime() {
+  const v=parseFloat(document.getElementById('time-val').value)||0;
+  const from=document.getElementById('time-from').value;
+  const to=document.getElementById('time-to').value;
+  const res = v * timeFactors[from] / timeFactors[to];
+  document.getElementById('time-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
+}
+
+// Energy (all in joules)
+const nrgFactors = {
+  'joule':1,'kilojoule':1000,'calorie':4.184,'kilocalorie':4184,
+  'watt-hour':3600,'kilowatt-hour':3.6e6,
+  'eV':1.60218e-19,'BTU':1055.06,'erg':1e-7
+};
+function convertNrg() {
+  const v=parseFloat(document.getElementById('nrg-val').value)||0;
+  const from=document.getElementById('nrg-from').value;
+  const to=document.getElementById('nrg-to').value;
+  const res = v * nrgFactors[from] / nrgFactors[to];
+  document.getElementById('nrg-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
+}
+
+// Pressure (all in pascals)
+const presFactors = {
+  'pascal':1,'kilopascal':1000,'megapascal':1e6,
+  'bar':1e5,'psi':6894.76,'atm':101325,
+  'mmHg':133.322,'torr':133.322
+};
+function convertPres() {
+  const v=parseFloat(document.getElementById('pres-val').value)||0;
+  const from=document.getElementById('pres-from').value;
+  const to=document.getElementById('pres-to').value;
+  const res = v * presFactors[from] / presFactors[to];
+  document.getElementById('pres-res').textContent = `${parseFloat(res.toPrecision(6))} ${to}`;
 }
 
 function convertBase() {
@@ -4279,7 +4902,7 @@ $${toLatex(data.problem)}$
 ${stepsLatex || 'No steps available.'}
 
 \\vfill
-\\footnotesize{Generated by \\textbf{Mathix} --- mathixai.netlify.app}
+\\footnotesize{Generated by \\textbf{Mathix} --- mathix.pages.dev}
 \\end{document}`;
 }
 
@@ -4336,14 +4959,14 @@ function openPdfModal(data) {
 
   document.getElementById('pdf-preview-content').innerHTML = `
     <div class="pdf-title">Mathix — Solution</div>
-    <div class="pdf-sub">Generated ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})} · mathixai.netlify.app</div>
+    <div class="pdf-sub">Generated ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})} · mathix.pages.dev</div>
     <div class="pdf-problem">${data.problem}</div>
     <div class="pdf-answer-box">
       <div class="pdf-answer-label">ANSWER</div>
       <div class="pdf-answer-val">${data.answer}</div>
     </div>
     ${stepsHtml ? `<div class="pdf-steps-title">Step-by-step solution</div>${stepsHtml}` : ''}
-    <div class="pdf-footer">Generated by Mathix · Free AI-powered scientific calculator · mathixai.netlify.app</div>
+    <div class="pdf-footer">Generated by Mathix · Free AI-powered scientific calculator · mathix.pages.dev</div>
   `;
 
   document.getElementById('pdf-overlay').classList.add('open');
